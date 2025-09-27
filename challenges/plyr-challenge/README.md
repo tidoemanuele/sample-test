@@ -1,3 +1,13 @@
+# 🎓 AI Formation Challenge Student?
+
+**👉 START HERE:** [`START_HERE.md`](./START_HERE.md)
+
+This README.md is the **original Plyr project documentation** (97KB of detailed technical docs). For the challenge instructions and learning materials, use the link above!
+
+---
+
+# Original Plyr Project Documentation
+
 Plyr is a simple, lightweight, accessible and customizable HTML5, YouTube and Vimeo media player that supports [_modern_](#browser-support) browsers.
 
 [Checkout the demo](https://plyr.io) - [Donate](#donate) - [Slack](https://bit.ly/plyr--chat) - [Video hosting](https://mux.com?ref=plyr-github)
