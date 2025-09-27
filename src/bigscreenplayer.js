@@ -73,6 +73,7 @@ function BigscreenPlayer() {
       }
 
       if (evt.data.state === MediaState.FATAL_ERROR) {
+        // eslint-disable-next-line no-console
         console.error('[PLAYER_STATE] Fatal error occurred:', {
           isBufferingTimeout: evt.isBufferingTimeoutError,
           code: evt.code,
@@ -94,7 +95,8 @@ function BigscreenPlayer() {
       stateObject.endOfStream = endOfStream
       DebugTool.statechange(evt.data.state)
 
-      callCallbacks(_callbacks.stateChange, stateObject)
+      console.log('[PLAYER_STATE] Broadcasting state change:', stateObject)
+      // callCallbacks(_callbacks.stateChange, stateObject)
     }
 
     if (

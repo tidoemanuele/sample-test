@@ -44,7 +44,7 @@ jest.mock('./manifest/sourceloader', () => ({
   }
 }))
 
-describe.skip('Formation Challenge - Corruption Detection Tests', () => {
+describe('Formation Challenge - Corruption Detection Tests', () => {
 
   describe('❌ Strategy Picker Should Fail', () => {
     beforeEach(() => {
