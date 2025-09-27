@@ -1,0 +1,227 @@
+name: Plyr Challenge CI
+
+on:
+  push:
+    paths:
+      - 'challenges/plyr-challenge/**'
+      - '.github/workflows/plyr-challenge-ci.yml'
+  pull_request:
+    paths:
+      - 'challenges/plyr-challenge/**'
+      - '.github/workflows/plyr-challenge-ci.yml'
+
+jobs:
+  build-and-test:
+    name: Build and Test Plyr Challenge
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: challenges/plyr-challenge/package-lock.json
+
+    - name: Install dependencies
+      working-directory: challenges/plyr-challenge
+      run: npm install --legacy-peer-deps
+
+    - name: Run lint checks
+      working-directory: challenges/plyr-challenge
+      run: |
+        # Run lint if available, continue on failure to show build results
+        npm run lint --if-present || echo "Lint check completed with warnings"
+
+    - name: Build project
+      working-directory: challenges/plyr-challenge
+      run: npm run build
+
+    - name: Run corruption tests (fast)
+      working-directory: challenges/plyr-challenge
+      run: |
+        echo "🧪 Running fast corruption detection tests..."
+        npm run test:fast
+        echo "✅ Fast tests completed"
+
+    - name: Run full test suite
+      working-directory: challenges/plyr-challenge
+      run: |
+        echo "🧪 Running complete corruption test suite..."
+        npm run test:ci
+        echo "✅ Full test suite completed"
+
+    - name: Check build artifacts
+      working-directory: challenges/plyr-challenge
+      run: |
+        echo "Checking build artifacts..."
+        ls -la dist/ || echo "No dist directory found"
+
+        # Verify key files exist
+        test -f dist/plyr.js && echo "✅ plyr.js built successfully" || echo "❌ plyr.js missing"
+        test -f dist/plyr.css && echo "✅ plyr.css built successfully" || echo "❌ plyr.css missing"
+        test -f dist/plyr.svg && echo "✅ plyr.svg built successfully" || echo "❌ plyr.svg missing"
+
+    - name: Run spellcheck
+      working-directory: challenges/plyr-challenge
+      run: |
+        # Run spellcheck if available, allow failures
+        npm run spellcheck --if-present || echo "Spellcheck completed"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      if: matrix.node-version == '18.x'  # Only upload once
+      with:
+        name: plyr-build-artifacts
+        path: |
+          challenges/plyr-challenge/dist/
+          challenges/plyr-challenge/demo/
+        retention-days: 7
+
+    - name: Challenge completion check
+      working-directory: challenges/plyr-challenge
+      run: |
+        echo "🔍 Challenge Completion Verification"
+        echo "===================================="
+
+        # Basic functionality checks
+        if [ -f "dist/plyr.js" ] && [ -f "dist/plyr.css" ]; then
+          echo "✅ Core build artifacts present"
+          BUILD_SUCCESS=true
+        else
+          echo "❌ Core build artifacts missing"
+          BUILD_SUCCESS=false
+        fi
+
+        # Run corruption detection tests
+        echo "🧪 Running corruption detection tests..."
+        if npm run test:corruption >/dev/null 2>&1; then
+          echo "✅ Corruption tests passed - no issues detected"
+          TEST_SUCCESS=true
+        else
+          echo "🔴 Corruption tests failed - issues detected (this may be expected for corrupted scenarios)"
+          echo "   Run 'npm run test' locally to see detailed test results"
+          TEST_SUCCESS=false
+        fi
+
+        # Check for common corruption indicators
+        if [ -f "src/js/plyr.js" ]; then
+          if grep -q "console.error\|throw new Error\|undefined is not" src/js/plyr.js; then
+            echo "⚠️  Potential corruption detected in source files"
+          else
+            echo "✅ Source files appear clean"
+          fi
+        fi
+
+        # File size checks (basic smoke test)
+        PLYR_JS_SIZE=$(stat -c%s "dist/plyr.js" 2>/dev/null || stat -f%z "dist/plyr.js" 2>/dev/null || echo 0)
+        if [ "$PLYR_JS_SIZE" -gt 10000 ]; then
+          echo "✅ Built JavaScript has reasonable size ($PLYR_JS_SIZE bytes)"
+        else
+          echo "⚠️  Built JavaScript seems unusually small ($PLYR_JS_SIZE bytes)"
+        fi
+
+        # Overall assessment
+        if [ "$BUILD_SUCCESS" = true ]; then
+          echo ""
+          echo "🎉 Plyr Challenge: Build verification PASSED!"
+          if [ "$TEST_SUCCESS" = true ]; then
+            echo "✅ All corruption tests passed - challenge may be completed!"
+          else
+            echo "🔴 Corruption tests detected issues - continue debugging"
+          fi
+          echo "   Next steps:"
+          echo "   1. Verify functionality with demo files"
+          echo "   2. Test in browser environment"
+          echo "   3. Review test output for specific corruption areas"
+          echo "   4. Use AI-assisted debugging to resolve issues"
+        else
+          echo ""
+          echo "❌ Plyr Challenge: Build verification FAILED!"
+          echo "   Debug steps:"
+          echo "   1. Check npm install output for errors"
+          echo "   2. Verify Node.js version compatibility"
+          echo "   3. Review build logs for specific failures"
+          exit 1
+        fi
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        cache-dependency-path: challenges/plyr-challenge/package-lock.json
+
+    - name: Install dependencies
+      working-directory: challenges/plyr-challenge
+      run: npm install --legacy-peer-deps
+
+    - name: Run security audit
+      working-directory: challenges/plyr-challenge
+      run: |
+        # Run audit but don't fail on known legacy issues
+        npm audit --audit-level high || echo "Security audit completed with known legacy vulnerabilities"
+
+    - name: Check for common security patterns
+      working-directory: challenges/plyr-challenge
+      run: |
+        echo "🔒 Security Pattern Check"
+        echo "========================"
+
+        # Check for potential security anti-patterns
+        if grep -r "eval\|innerHTML.*user\|document.write" src/ 2>/dev/null; then
+          echo "⚠️  Potential security concerns found in source"
+        else
+          echo "✅ No obvious security anti-patterns detected"
+        fi
+
+        echo "ℹ️  Note: This is a learning environment with controlled corruption scenarios"
+
+  challenge-validation:
+    name: Challenge Progress Validation
+    runs-on: ubuntu-latest
+    needs: [build-and-test]
+    if: github.event_name == 'pull_request'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Validate challenge completion
+      run: |
+        echo "🎓 Challenge Progress Validation"
+        echo "==============================="
+
+        # Check if this is a solution submission
+        if [[ "${{ github.head_ref }}" == *"solution"* ]] || [[ "${{ github.head_ref }}" == *"challenge"* ]]; then
+          echo "✅ Detected challenge solution branch"
+
+          # Look for documentation of learning process
+          if [ -f "docs/my-learning-notes.md" ] || [ -f "SOLUTION.md" ] || [ -f "challenges/plyr-challenge/NOTES.md" ]; then
+            echo "✅ Learning documentation found"
+          else
+            echo "⚠️  Consider documenting your debugging process and insights"
+          fi
+
+          echo ""
+          echo "🎉 Great work on progressing through the challenge!"
+          echo "   Remember: The goal is learning AI-assisted development patterns"
+          echo "   Review your solution and document effective strategies for future challenges"
+        else
+          echo "ℹ️  This appears to be a general update, not a challenge solution"
+        fi

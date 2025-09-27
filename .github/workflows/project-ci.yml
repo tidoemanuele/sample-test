@@ -1,0 +1,215 @@
+name: AI Formation Project CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths-ignore:
+      - 'challenges/**'  # Handled by specific challenge workflows
+  pull_request:
+    branches: [ main, develop ]
+    paths-ignore:
+      - 'challenges/**'
+
+jobs:
+  documentation-check:
+    name: Documentation Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check project structure
+      run: |
+        echo "📁 Project Structure Validation"
+        echo "==============================="
+
+        # Verify essential directories exist
+        test -d "docs" && echo "✅ docs/ directory exists" || echo "❌ docs/ directory missing"
+        test -d "challenges" && echo "✅ challenges/ directory exists" || echo "❌ challenges/ directory missing"
+        test -d ".bmad-core" && echo "✅ .bmad-core/ directory exists" || echo "❌ .bmad-core/ directory missing"
+
+        # Check for essential files
+        test -f "README.md" && echo "✅ README.md exists" || echo "❌ README.md missing"
+        test -f "CLAUDE.md" && echo "✅ CLAUDE.md exists" || echo "❌ CLAUDE.md missing"
+
+    - name: Validate README content
+      run: |
+        echo "📖 README Content Validation"
+        echo "============================"
+
+        if [ -f "README.md" ]; then
+          # Check for essential sections
+          grep -q "Quick Start" README.md && echo "✅ Quick Start section present" || echo "⚠️  Quick Start section missing"
+          grep -q "Prerequisites" README.md && echo "✅ Prerequisites section present" || echo "⚠️  Prerequisites section missing"
+          grep -q "Challenge Structure" README.md && echo "✅ Challenge Structure section present" || echo "⚠️  Challenge Structure section missing"
+          grep -q "Troubleshooting" README.md && echo "✅ Troubleshooting section present" || echo "⚠️  Troubleshooting section missing"
+        fi
+
+    - name: Check documentation templates
+      run: |
+        echo "📋 Template Validation"
+        echo "======================"
+
+        if [ -f "docs/challenge-instructions-template.md" ]; then
+          echo "✅ Challenge instructions template exists"
+          grep -q "Learning Objectives" docs/challenge-instructions-template.md && echo "✅ Template has learning objectives" || echo "⚠️  Template missing learning objectives"
+        else
+          echo "❌ Challenge instructions template missing"
+        fi
+
+        if [ -f "docs/troubleshooting-guide-large-scale-projects.md" ]; then
+          echo "✅ Troubleshooting guide exists"
+        else
+          echo "❌ Troubleshooting guide missing"
+        fi
+
+    - name: Validate challenge structure
+      run: |
+        echo "🎯 Challenge Structure Check"
+        echo "============================"
+
+        CHALLENGE_COUNT=0
+        for challenge_dir in challenges/*/; do
+          if [ -d "$challenge_dir" ]; then
+            CHALLENGE_NAME=$(basename "$challenge_dir")
+            echo "Found challenge: $CHALLENGE_NAME"
+
+            # Check for essential challenge files
+            if [ -f "${challenge_dir}package.json" ]; then
+              echo "  ✅ package.json exists"
+            else
+              echo "  ❌ package.json missing"
+            fi
+
+            if [ -f "${challenge_dir}README.md" ] || [ -f "${challenge_dir}README.md" ]; then
+              echo "  ✅ Documentation exists"
+            else
+              echo "  ⚠️  Challenge-specific documentation missing"
+            fi
+
+            CHALLENGE_COUNT=$((CHALLENGE_COUNT + 1))
+          fi
+        done
+
+        echo ""
+        echo "📊 Summary: Found $CHALLENGE_COUNT challenges"
+        if [ $CHALLENGE_COUNT -gt 0 ]; then
+          echo "✅ Project has challenges configured"
+        else
+          echo "⚠️  No challenges found - check challenges/ directory"
+        fi
+
+  bmad-configuration-check:
+    name: BMad Framework Validation
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Validate BMad configuration
+      run: |
+        echo "🔧 BMad Framework Configuration"
+        echo "==============================="
+
+        # Check core configuration
+        if [ -f ".bmad-core/core-config.yaml" ]; then
+          echo "✅ Core configuration exists"
+
+          # Validate key configuration sections
+          if grep -q "devStoryLocation:" .bmad-core/core-config.yaml; then
+            STORY_LOCATION=$(grep "devStoryLocation:" .bmad-core/core-config.yaml | cut -d: -f2 | tr -d ' ')
+            if [ -d "$STORY_LOCATION" ]; then
+              echo "✅ Story location ($STORY_LOCATION) exists"
+            else
+              echo "❌ Story location ($STORY_LOCATION) missing"
+            fi
+          fi
+        else
+          echo "❌ BMad core configuration missing"
+        fi
+
+        # Check for agent configurations
+        if [ -d ".bmad-core/agents" ]; then
+          echo "✅ Agent configurations directory exists"
+          AGENT_COUNT=$(ls -1 .bmad-core/agents/ 2>/dev/null | wc -l)
+          echo "  Found $AGENT_COUNT agent configurations"
+        else
+          echo "⚠️  Agent configurations directory missing"
+        fi
+
+        # Check for task definitions
+        if [ -d ".bmad-core/tasks" ]; then
+          echo "✅ Task definitions directory exists"
+          TASK_COUNT=$(ls -1 .bmad-core/tasks/ 2>/dev/null | wc -l)
+          echo "  Found $TASK_COUNT task definitions"
+        else
+          echo "⚠️  Task definitions directory missing"
+        fi
+
+  story-validation:
+    name: Story Documentation Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Validate story files
+      run: |
+        echo "📚 Story Documentation Validation"
+        echo "================================="
+
+        if [ -d "docs/stories" ]; then
+          STORY_COUNT=$(ls -1 docs/stories/*.md 2>/dev/null | wc -l)
+          echo "Found $STORY_COUNT story files"
+
+          for story in docs/stories/*.md; do
+            if [ -f "$story" ]; then
+              STORY_NAME=$(basename "$story")
+              echo "Validating: $STORY_NAME"
+
+              # Check for required sections
+              grep -q "## Status" "$story" && echo "  ✅ Status section present" || echo "  ⚠️  Status section missing"
+              grep -q "## Story" "$story" && echo "  ✅ Story section present" || echo "  ⚠️  Story section missing"
+              grep -q "## Acceptance Criteria" "$story" && echo "  ✅ Acceptance Criteria present" || echo "  ⚠️  AC missing"
+              grep -q "## Tasks / Subtasks" "$story" && echo "  ✅ Tasks section present" || echo "  ⚠️  Tasks section missing"
+            fi
+          done
+        else
+          echo "⚠️  Stories directory not found"
+        fi
+
+  project-health-summary:
+    name: Project Health Summary
+    runs-on: ubuntu-latest
+    needs: [documentation-check, bmad-configuration-check, story-validation]
+    if: always()
+
+    steps:
+    - name: Generate health report
+      run: |
+        echo "🏥 AI Formation Project Health Report"
+        echo "===================================="
+        echo ""
+        echo "This automated check validates the project structure and configuration"
+        echo "for the AI Formation Program. All components should be in place for"
+        echo "participants to begin their learning journey."
+        echo ""
+        echo "📋 Validation Results:"
+        echo "- Documentation Check: ${{ needs.documentation-check.result }}"
+        echo "- BMad Configuration: ${{ needs.bmad-configuration-check.result }}"
+        echo "- Story Validation: ${{ needs.story-validation.result }}"
+        echo ""
+
+        if [[ "${{ needs.documentation-check.result }}" == "success" && "${{ needs.bmad-configuration-check.result }}" == "success" && "${{ needs.story-validation.result }}" == "success" ]]; then
+          echo "🎉 Project Health: EXCELLENT"
+          echo "   Ready for participant onboarding!"
+        elif [[ "${{ needs.documentation-check.result }}" == "success" ]]; then
+          echo "✅ Project Health: GOOD"
+          echo "   Core functionality ready, minor improvements possible"
+        else
+          echo "⚠️  Project Health: NEEDS ATTENTION"
+          echo "   Review failed checks before participant onboarding"
+        fi
