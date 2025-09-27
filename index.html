@@ -6,6 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
+        <div style="position: fixed; top: 10px; left: 10px; z-index: 1000;">
+            <button id="unmuteBtn" onclick="toggleMute()" style="padding: 10px; font-size: 16px;">🔇 Click to unmute</button>
+        </div>
         <script type="module">
             import { BigscreenPlayer } from "./dist-local/esm/main.js"
 
@@ -25,7 +28,13 @@
             let minimalData = {
                 initialPlaybackTime: { seconds: 30 },
                 media: {
-                    captions: [],
+                    captions: [
+                        {
+                            url: "http://localhost:10001/test-subtitles.srt",
+                            type: "text/srt",
+                            language: "en"
+                        }
+                    ],
                     type: "application/dash+xml",
                     mimeType: "video/mp4",
                     kind: "video",
@@ -43,12 +52,36 @@
             player.init(playbackElement, minimalData, {
                 onSuccess: function () {
                     player.toggleDebug()
+                    // Start playback automatically (muted to comply with autoplay policies)
+                    const videoElement = playbackElement.querySelector('video')
+                    if (videoElement) {
+                        videoElement.muted = true
+                        player.play()
+                    }
+
+                    // Test seek functionality after 3 seconds
+                    setTimeout(() => {
+                        console.log('=== TESTING SEEK FUNCTIONALITY ===')
+                        player.setCurrentTime(60) // Try to seek to 60 seconds
+                    }, 3000)
                 },
                 onError: function (error) {
                     player.toggleDebug()
                     throw new Error("Initialisation failed.", { cause: error })
                 },
             })
+
+            // Add toggle mute function
+            window.toggleMute = function() {
+                const videoElement = playbackElement.querySelector('video')
+                const btn = document.getElementById('unmuteBtn')
+                if (videoElement) {
+                    videoElement.muted = !videoElement.muted
+                    const newState = videoElement.muted ? 'muted' : 'unmuted'
+                    console.log(`Audio toggled: Video is now ${newState}`)
+                    btn.textContent = videoElement.muted ? '🔇 Click to unmute' : '🔊 Click to mute'
+                }
+            }
         </script>
     </body>
 </html>

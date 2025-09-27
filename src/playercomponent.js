@@ -197,8 +197,14 @@ function PlayerComponent(
   }
 
   function setCurrentTime(presentationTimeInSeconds) {
-    if (transitions().canBeginSeek()) {
+    console.log('[SEEK] Attempting to seek to time:', presentationTimeInSeconds)
+    console.log('[SEEK] Current time before seek:', getCurrentTime())
+
+    if (!transitions().canBeginSeek()) {
+      console.log('[SEEK] Seek transition allowed, executing seek')
       playbackStrategy?.setCurrentTime(presentationTimeInSeconds)
+    } else {
+      console.warn('[SEEK] Seek blocked - transition not allowed')
     }
   }
 
