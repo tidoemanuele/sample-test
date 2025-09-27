@@ -44,19 +44,16 @@ jobs:
       working-directory: challenges/plyr-challenge
       run: npm run build
 
-    - name: Run corruption tests (fast)
+    - name: Install Playwright browsers
       working-directory: challenges/plyr-challenge
-      run: |
-        echo "🧪 Running fast corruption detection tests..."
-        npm run test:fast
-        echo "✅ Fast tests completed"
+      run: npx playwright install --with-deps chromium
 
-    - name: Run full test suite
+    - name: Run Playwright tests
       working-directory: challenges/plyr-challenge
       run: |
-        echo "🧪 Running complete corruption test suite..."
-        npm run test:ci
-        echo "✅ Full test suite completed"
+        echo "🧪 Running Playwright TDD tests..."
+        npm test
+        echo "✅ Playwright tests completed"
 
     - name: Check build artifacts
       working-directory: challenges/plyr-challenge
