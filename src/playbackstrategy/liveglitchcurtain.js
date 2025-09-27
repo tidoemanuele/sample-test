@@ -1,7 +1,7 @@
 import DOMHelpers from "../domhelpers"
 
 function LiveGlitchCurtain(parentElement) {
-  let curtain = document.createElement("div")
+  const curtain = document.createElement("div")
 
   curtain.id = "liveGlitchCurtain"
   curtain.style.display = "none"

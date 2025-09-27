@@ -48,11 +48,11 @@ function Transformer() {
       let opacity = parseInt(value.slice(7, 9), 16) / 255
 
       if (isNaN(opacity)) {
-        opacity = 1.0
+        opacity = 1
       }
 
       value = DOMHelpers.rgbaToRGB(value)
-      value += "; opacity: " + opacity + ";"
+      value += `; opacity: ${  opacity  };`
     }
     return value
   }
@@ -91,7 +91,7 @@ function Transformer() {
         value = rgbWithOpacity(value)
       }
 
-      stringStyle += map.property + ": " + value + "; "
+      stringStyle += `${map.property  }: ${  value  }; `
     }
 
     return stringStyle
@@ -155,13 +155,13 @@ function Transformer() {
         subtitlesForTime: (time) => items.filter((subtitle) => subtitle.start < time && subtitle.end > time),
       }
     } catch (e) {
-      DebugTool.info("Error transforming captions : " + e)
+      DebugTool.info(`Error transforming captions : ${  e}`)
       Plugins.interface.onSubtitlesTransformError()
     }
   }
 
   return {
-    transformXML: transformXML,
+    transformXML,
   }
 }
 

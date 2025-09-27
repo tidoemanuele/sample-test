@@ -59,20 +59,14 @@ function BigscreenPlayer() {
 
   function mediaStateUpdateCallback(evt) {
     if (evt.timeUpdate) {
-      console.log('[PLAYER_STATE] Time update:', {
-        currentTime: evt.data.currentTime,
-        endOfStream
-      })
       callCallbacks(_callbacks.timeUpdate, {
         currentTime: evt.data.currentTime,
         endOfStream,
       })
     } else {
-      console.log('[PLAYER_STATE] State change event:', evt.data.state)
       let stateObject = { state: evt.data.state }
 
       if (evt.data.state === MediaState.PAUSED) {
-        console.log('[PLAYER_STATE] Player paused, trigger:', pauseTrigger || 'DEVICE')
         endOfStream = false
         stateObject.trigger = pauseTrigger || PauseTriggers.DEVICE
         pauseTrigger = undefined
@@ -93,7 +87,6 @@ function BigscreenPlayer() {
       }
 
       if (evt.data.state === MediaState.WAITING) {
-        console.log('[PLAYER_STATE] Player waiting, is seeking:', isSeeking)
         stateObject.isSeeking = isSeeking
         isSeeking = false
       }
@@ -101,8 +94,7 @@ function BigscreenPlayer() {
       stateObject.endOfStream = endOfStream
       DebugTool.statechange(evt.data.state)
 
-      console.log('[PLAYER_STATE] Broadcasting state change:', stateObject)
-      // callCallbacks(_callbacks.stateChange, stateObject)
+      callCallbacks(_callbacks.stateChange, stateObject)
     }
 
     if (

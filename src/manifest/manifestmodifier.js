@@ -12,9 +12,7 @@ function filter(manifest, representationOptions) {
             frameRates.push(representation.frameRate)
             return true
           }
-        }).filter((representation) => {
-          return !constantFps || representation.frameRate === Math.max.apply(null, frameRates)
-        })
+        }).filter((representation) => !constantFps || representation.frameRate === Math.max.apply(null, frameRates))
       }
       return adaptationSet
     })
@@ -63,7 +61,7 @@ function generateBaseUrls(manifest, sources) {
       __text: source,
       "dvb:priority": priority,
       "dvb:weight": isNaN(source.dpw) ? 0 : source.dpw,
-      serviceLocation: serviceLocation,
+      serviceLocation,
     }
   }
 
@@ -95,14 +93,12 @@ function generateBaseUrls(manifest, sources) {
   }
 
   function setBaseUrlsFromSource() {
-    manifest.BaseURL_asArray = sources.map((source, priority) => {
-      return generateBaseUrl(source, priority, source)
-    })
+    manifest.BaseURL_asArray = sources.map((source, priority) => generateBaseUrl(source, priority, source))
   }
 }
 
 export default {
-  filter: filter,
-  extractBaseUrl: extractBaseUrl,
-  generateBaseUrls: generateBaseUrls,
+  filter,
+  extractBaseUrl,
+  generateBaseUrls,
 }

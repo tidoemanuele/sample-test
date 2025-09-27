@@ -20,17 +20,14 @@ function AllowedMediaTransitions(mediaplayer) {
   function canBeStopped() {
     const unstoppableStates = [MediaPlayerState.EMPTY, MediaPlayerState.ERROR]
 
-    const stoppable = unstoppableStates.indexOf(player.getState()) === -1
-    return stoppable
+    return unstoppableStates.indexOf(player.getState()) === -1
   }
 
   function canBeginSeek() {
     const unseekableStates = [MediaPlayerState.EMPTY, MediaPlayerState.ERROR]
 
     const state = player.getState()
-    const seekable = state ? unseekableStates.indexOf(state) === -1 : false
-
-    return seekable
+    return state ? unseekableStates.indexOf(state) === -1 : false
   }
 
   function canResume() {
@@ -38,10 +35,10 @@ function AllowedMediaTransitions(mediaplayer) {
   }
 
   return {
-    canBePaused: canBePaused,
-    canBeStopped: canBeStopped,
-    canBeginSeek: canBeginSeek,
-    canResume: canResume,
+    canBePaused,
+    canBeStopped,
+    canBeginSeek,
+    canResume,
   }
 }
 

@@ -10,6 +10,14 @@ const unsafe = [
   "src/playbackstrategy/modifiers/samsungmaple.js",
   "src/playbackstrategy/modifiers/samsungstreaming.js",
   "src/playbackstrategy/modifiers/samsungstreaming2015.js",
+  // Formation challenge files - may have intentional linting issues
+  "src/formation-challenge*.js",
+  "src/formation-challenge*.test.js",
+  // Built files
+  "dist/**/*",
+  "dist-local/**/*",
+  // Config files that need console logging and CommonJS
+  "jest.setup.js",
 ]
 
 const namingConvention = [

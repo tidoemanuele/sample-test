@@ -26,10 +26,10 @@ function TimedText(timedPieceNode, toStyleFunc) {
   function timeStampToSeconds(timeStamp) {
     const timePieces = timeStamp.split(":")
     let timeSeconds = parseFloat(timePieces.pop(), 10)
-    if (timePieces.length) {
+    if (timePieces.length > 0) {
       timeSeconds += 60 * parseInt(timePieces.pop(), 10)
     }
-    if (timePieces.length) {
+    if (timePieces.length > 0) {
       timeSeconds += 60 * 60 * parseInt(timePieces.pop(), 10)
     }
     return timeSeconds
@@ -86,11 +86,11 @@ function TimedText(timedPieceNode, toStyleFunc) {
   }
 
   return {
-    start: start,
-    end: end,
+    start,
+    end,
     // TODO: can we stop this from adding/removing itself from the DOM? Just expose the 'generateNode' function? OR just generate the node at creation and have a property...
-    removeFromDomIfExpired: removeFromDomIfExpired,
-    addToDom: addToDom,
+    removeFromDomIfExpired,
+    addToDom,
   }
 }
 

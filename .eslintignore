@@ -15,5 +15,10 @@
 !src/**/*.cts
 !src/**/*.mts
 
-# Formation Challenge Files - Allow console logging and test patterns
-!src/formation-challenge*.test.js
+# Exclude build/dist directories
+dist/
+dist-local/
+
+# Formation Challenge Files - Exclude from linting due to intentional test patterns
+src/formation-challenge*.test.js
+src/formation-challenge*.js

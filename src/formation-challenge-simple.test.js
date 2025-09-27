@@ -119,7 +119,7 @@ describe('Formation Challenge - Logging Infrastructure Tests', () => {
       })
 
       // Verify we have exactly 5 features
-      expect(allFeaturePrefixes.length).toBe(5)
+      expect(allFeaturePrefixes).toHaveLength(5)
     })
 
     test('should be ready for corruption phase', () => {

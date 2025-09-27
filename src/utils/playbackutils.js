@@ -9,7 +9,7 @@ export default {
     return clone
   },
 
-  deepClone: function (objectToClone) {
+  deepClone (objectToClone) {
     if (!objectToClone) {
       return objectToClone
     }
@@ -30,7 +30,7 @@ export default {
     return clone
   },
 
-  cloneArray: function (arr) {
+  cloneArray (arr) {
     const clone = []
 
     for (let i = 0, n = arr.length; i < n; i++) {
@@ -40,18 +40,14 @@ export default {
     return clone
   },
 
-  merge: function () {
+  merge () {
     const merged = {}
 
     for (let i = 0; i < arguments.length; i++) {
       const obj = arguments[i]
       for (const prop in obj) {
         if (obj.hasOwnProperty(prop)) {
-          if (Object.prototype.toString.call(obj[prop]) === "[object Object]") {
-            merged[prop] = this.merge(merged[prop], obj[prop])
-          } else {
-            merged[prop] = obj[prop]
-          }
+          merged[prop] = Object.prototype.toString.call(obj[prop]) === "[object Object]" ? this.merge(merged[prop], obj[prop]) : obj[prop];
         }
       }
     }
@@ -69,20 +65,12 @@ export default {
     return true
   },
 
-  find: (array, predicate) => {
-    return array.reduce((acc, it, i) => {
-      return acc !== false ? acc : predicate(it) && it
-    }, false)
-  },
+  find: (array, predicate) => array.reduce((acc, it, i) => acc === false ? predicate(it) && it : acc, false),
 
-  findIndex: (array, predicate) => {
-    return array.reduce((acc, it, i) => {
-      return acc !== false ? acc : predicate(it) && i
-    }, false)
-  },
+  findIndex: (array, predicate) => array.reduce((acc, it, i) => acc === false ? predicate(it) && i : acc, false),
 
   swap: (array, i, j) => {
-    const arr = array.slice()
+    const arr = [...array]
     const temp = arr[i]
 
     arr[i] = arr[j]
@@ -101,7 +89,7 @@ export default {
     return plucked
   },
 
-  flatten: (arr) => [].concat.apply([], arr),
+  flatten: (arr) => Array.prototype.concat.apply([], arr),
 
   without: (arr, value) => {
     const newArray = []
@@ -115,15 +103,9 @@ export default {
     return newArray
   },
 
-  contains: (arr, subset) => {
-    return [].concat(subset).every((item) => {
-      return [].concat(arr).indexOf(item) > -1
-    })
-  },
+  contains: (arr, subset) => [].concat(subset).every((item) => [].concat(arr).indexOf(item) > -1),
 
-  pickRandomFromArray: (arr) => {
-    return arr[Math.floor(Math.random() * arr.length)]
-  },
+  pickRandomFromArray: (arr) => arr[Math.floor(Math.random() * arr.length)],
 
   filter: (arr, predicate) => {
     const filteredArray = []
@@ -140,7 +122,7 @@ export default {
   noop: () => {},
 
   generateUUID: () => {
-    let d = new Date().getTime()
+    let d = Date.now()
 
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
       const r = (d + Math.random() * 16) % 16 | 0
@@ -149,9 +131,5 @@ export default {
     })
   },
 
-  path: (object, keys) => {
-    return (keys || []).reduce((accum, key) => {
-      return (accum || {})[key]
-    }, object || {})
-  },
+  path: (object, keys) => (keys || []).reduce((accum, key) => (accum || {})[key], object || {}),
 }
