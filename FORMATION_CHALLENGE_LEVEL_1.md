@@ -103,8 +103,8 @@
 - [ ] **ENHANCE**: Polish the user experience
 
   - Add smooth visual transitions and animations
-  - Implement keyboard navigation support
-  - Ensure accessibility considerations are met
+  - Improve volume control
+  - Collapsible video debug panels
 
 - [ ] **TEST**: Comprehensive functionality validation
   - Test seeking accuracy and responsiveness
