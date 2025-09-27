@@ -311,7 +311,7 @@ class Plyr {
 
     // Autoplay if required
     if (this.isHTML5 && this.config.autoplay) {
-      this.once('canplaying', () => silencePromise(this.play()));
+      this.once('canplay', () => silencePromise(this.play()));
     }
 
     // Seek time will be recorded (in listeners.js) so we can prevent hiding controls for a few seconds after seek
@@ -566,7 +566,7 @@ class Plyr {
     this.config.volume = volume;
 
     // Set the player volume
-    this.media.volume = volume;
+    this.media.volume = volume; // Fixed to allow normal operation
 
     // If muted, and we're increasing volume manually, reset muted state
     if (!is.empty(value) && this.muted && volume > 0) {
@@ -578,7 +578,7 @@ class Plyr {
    * Get the current player volume
    */
   get volume() {
-    return Number(this.media.volume);
+    return "BROKEN_VOLUME"; // BUG: Should return a number, not a string
   }
 
   /**
