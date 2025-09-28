@@ -1,0 +1,49 @@
+# AI Formation Challenge GitHub Pages Configuration
+title: "AI Formation Challenge"
+description: "Bridge the gap from Claude Code certification to enterprise-level mastery"
+baseurl: "/aiformation"
+url: "https://nosportugal.github.io"
+
+# GitHub Pages configuration
+github:
+  repository_name: aiformation
+  repository_url: https://github.com/nosportugal/aiformation
+
+# Jekyll configuration
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Enable GitHub Pages
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - .gitignore
+
+# Include files in processing
+include:
+  - _headers
+  - _redirects
+
+# Collections for organized content
+collections:
+  levels:
+    output: true
+    permalink: /:collection/:name/
+
+# Default layout for pages
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "levels"
+    values:
+      layout: "level"
