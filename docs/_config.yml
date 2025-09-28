@@ -2,12 +2,12 @@
 title: "AI Formation Challenge"
 description: "Bridge the gap from Claude Code certification to enterprise-level mastery"
 baseurl: "/aiformation"
-url: "https://nosportugal.github.io"
+url: "https://tidoemanuele.github.io"
 
 # GitHub Pages configuration
 github:
   repository_name: aiformation
-  repository_url: https://github.com/nosportugal/aiformation
+  repository_url: https://github.com/tidoemanuele/aiformation
 
 # Jekyll configuration
 markdown: kramdown
