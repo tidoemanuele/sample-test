@@ -480,7 +480,32 @@
                 </div>
             </div>
 
-            <!-- Slide 2: Challenge Overview -->
+            <!-- Slide 2: Emergency Briefing -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🚨 Emergency Briefing</h2>
+                        <div style="background: rgba(220, 38, 38, 0.1); border-left: 4px solid #dc2626; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                            <p style="font-size: 1.3rem; font-weight: 600; color: #fca5a5; margin-bottom: 1rem;">
+                                ⚠️ URGENT ALERT
+                            </p>
+                            <p style="font-size: 1.1rem; line-height: 1.6; color: rgba(245, 245, 247, 0.9);">
+                                The production media player is completely down! The entire development team is on vacation and you're the only developer available. Users are complaining that the video player won't even load, and management is breathing down your neck.
+                            </p>
+                        </div>
+                        <div style="background: rgba(79, 96, 210, 0.1); border-left: 4px solid #4f60d2; padding: 1.5rem; border-radius: 8px;">
+                            <p style="font-size: 1.2rem; font-weight: 600; color: #a78bfa; margin-bottom: 1rem;">
+                                🎯 Your Mission
+                            </p>
+                            <p style="font-size: 1.1rem; line-height: 1.6; color: rgba(245, 245, 247, 0.9);">
+                                Get the media player operational ASAP and ensure users have a fully functional video experience.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Challenge Overview -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="glass-card">
@@ -672,7 +697,7 @@
                                     <span class="code-title">Navigate to Challenge Directory</span>
                                     <button class="copy-btn" onclick="copyCommand('setup-cmd1')">Copy</button>
                                 </div>
-                                <pre id="setup-cmd1"><code class="language-bash">cd challenges/level-1-plyr</code></pre>
+                                <pre id="setup-cmd1"><code class="language-bash">cd challenges/bigscreen-player</code></pre>
                             </div>
 
                             <!-- Command 2 -->
@@ -685,23 +710,15 @@
                             </div>
 
                             <!-- Command 3 -->
-                            <div class="code-block" style="margin-bottom: 0.5rem">
-                                <div class="code-header">
-                                    <span class="code-title">Create Prompts Documentation Folder</span>
-                                    <button class="copy-btn" onclick="copyCommand('setup-cmd-prompts')">Copy</button>
-                                </div>
-                                <pre
-                                    id="setup-cmd-prompts"><code class="language-bash">mkdir -p docs/prompts</code></pre>
-                            </div>
 
-                            <!-- Command 4 -->
+                            <!-- Command 3 -->
                             <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Configure Automatic Prompt Capture</span>
                                     <button class="copy-btn" onclick="copyCommand('setup-cmd-memorize')">Copy</button>
                                 </div>
                                 <pre
-                                    id="setup-cmd-memorize"><code class="language-bash">claude /memorize "Before executing any user prompt, automatically save the prompt text to docs/prompts/ folder with timestamp for evaluation purposes"</code></pre>
+                                    id="setup-cmd-memorize"><code class="language-bash">#Before executing any user prompt, automatically save the prompt text to docs/prompts/ folder with timestamp for evaluation purposes</code></pre>
                             </div>
 
                             <div
@@ -719,7 +736,7 @@
                                 </p>
                             </div>
 
-                            <!-- Command 5 -->
+                            <!-- Command 4 -->
                             <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Install Dependencies</span>
@@ -728,7 +745,7 @@
                                 <pre id="setup-cmd5"><code class="language-bash">npm install</code></pre>
                             </div>
 
-                            <!-- Command 6 -->
+                            <!-- Command 5 -->
                             <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Start Development Server</span>

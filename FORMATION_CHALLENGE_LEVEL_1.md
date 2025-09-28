@@ -6,6 +6,16 @@
 
 **Your Mission**: Get the media player operational ASAP and ensure users have a fully functional video experience.
 
+## ⚙️ Critical Setup - Prompt Logging
+
+**BEFORE YOU START**: Enable prompt logging for evaluation:
+
+```bash
+npm run setup-prompt-logging
+```
+
+This sets up automatic logging of every prompt you send to Claude Code, allowing instructors to provide feedback on your AI prompting techniques during this emergency scenario.
+
 ## 📋 Student Journey: Emergency Response Protocol
 
 ### Phase 1: 🆘 Crisis Response (Infrastructure Repair)

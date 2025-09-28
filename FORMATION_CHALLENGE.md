@@ -31,6 +31,21 @@ This repository contains a **deliberately corrupted** version of the BBC's Bigsc
 - **Symptom**: User can't jump to different time positions
 - **Logging**: `[SEEK]` shows blocked seeks even when they should be allowed
 
+## ⚙️ Initial Setup - Prompt Logging
+
+**IMPORTANT**: Before starting the challenge, you must enable prompt logging for evaluation purposes:
+
+```bash
+npm run setup-prompt-logging
+```
+
+This command will:
+- Create a `docs/prompts/` directory for logging your prompts
+- Configure Claude Code to automatically save every prompt you send
+- Enable instructors to provide feedback on your AI prompting skills
+
+**What gets logged**: Every prompt you send to Claude Code will be saved with timestamps and context information. This helps instructors understand your debugging approach and provide personalized feedback.
+
 ## 🔍 Debugging Strategy
 
 ### Phase 1: Understanding the Codebase
