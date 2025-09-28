@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AI Formation Challenge - Level 1 Guide</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    "Inter",
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    sans-serif;
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+                min-height: 100vh;
+                color: #f8fafc;
+                overflow-x: hidden;
+            }
+
+            .slide-container {
+                position: relative;
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .slide {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                padding: 2rem;
+            }
+
+            .slide.active {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .slide.prev {
+                transform: translateX(-100%);
+            }
+
+            .slide-content {
+                max-width: 1200px;
+                width: 100%;
+                text-align: center;
+                position: relative;
+            }
+
+            .glass-card {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 24px;
+                padding: 4rem;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .glass-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            }
+
+            h1 {
+                font-size: clamp(2.5rem, 5vw, 4rem);
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                background: linear-gradient(135deg, #60a5fa, #34d399, #fbbf24);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                line-height: 1.2;
+            }
+
+            h2 {
+                font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+                font-weight: 600;
+                margin-bottom: 2rem;
+                color: #e2e8f0;
+            }
+
+            h3 {
+                font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+                font-weight: 500;
+                margin-bottom: 1.5rem;
+                color: #cbd5e1;
+            }
+
+            p {
+                font-size: clamp(1rem, 2vw, 1.2rem);
+                line-height: 1.7;
+                color: #94a3b8;
+                margin-bottom: 2rem;
+            }
+
+            .highlight {
+                color: #60a5fa;
+                font-weight: 600;
+            }
+
+            .code-block {
+                background: rgba(15, 23, 42, 0.8);
+                border: 1px solid rgba(148, 163, 184, 0.2);
+                border-radius: 16px;
+                padding: 2rem;
+                margin: 2rem 0;
+                text-align: left;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .code-block::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #60a5fa, #34d399);
+            }
+
+            .code-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+            }
+
+            .code-title {
+                font-size: 0.9rem;
+                color: #94a3b8;
+                font-weight: 500;
+            }
+
+            .copy-btn {
+                background: rgba(96, 165, 250, 0.1);
+                border: 1px solid rgba(96, 165, 250, 0.3);
+                color: #60a5fa;
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.8rem;
+                transition: all 0.3s ease;
+            }
+
+            .copy-btn:hover {
+                background: rgba(96, 165, 250, 0.2);
+                transform: translateY(-1px);
+            }
+
+            pre {
+                margin: 0;
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .step-indicator {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 1rem;
+                z-index: 100;
+            }
+
+            .step-dots {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(148, 163, 184, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .dot.active {
+                background: #60a5fa;
+                transform: scale(1.2);
+            }
+
+            .navigation {
+                position: fixed;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 1rem;
+                z-index: 100;
+            }
+
+            .nav-btn {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #f8fafc;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                cursor: pointer;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .nav-btn:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .nav-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .nav-btn:disabled:hover {
+                transform: none;
+            }
+
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 2rem;
+                margin-top: 3rem;
+            }
+
+            .feature-card {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 16px;
+                padding: 2rem;
+                transition: all 0.3s ease;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-4px);
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .feature-icon {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .animated-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0.1;
+                z-index: -1;
+            }
+
+            .animated-bg::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: conic-gradient(from 0deg, transparent, #60a5fa, transparent);
+                animation: rotate 20s linear infinite;
+            }
+
+            @keyframes rotate {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .slide-enter {
+                animation: slideEnter 0.8s ease-out;
+            }
+
+            @keyframes slideEnter {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            .list-style {
+                text-align: left;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .list-style li {
+                font-size: 1.1rem;
+                line-height: 1.8;
+                color: #cbd5e1;
+                margin-bottom: 1rem;
+                position: relative;
+                padding-left: 2rem;
+            }
+
+            .list-style li::before {
+                content: "→";
+                position: absolute;
+                left: 0;
+                color: #60a5fa;
+                font-weight: bold;
+            }
+
+            .terminal-style {
+                background: #0f172a;
+                border: 2px solid #334155;
+                border-radius: 12px;
+                padding: 1.5rem;
+                font-family: "Monaco", "Menlo", monospace;
+                color: #34d399;
+                margin: 2rem 0;
+            }
+
+            .terminal-prompt::before {
+                content: "$ ";
+                color: #60a5fa;
+                font-weight: bold;
+            }
+
+            .level-badge {
+                position: fixed;
+                top: 2rem;
+                left: 2rem;
+                background: linear-gradient(135deg, #60a5fa, #34d399);
+                color: #0f172a;
+                padding: 0.75rem 1.5rem;
+                border-radius: 12px;
+                font-weight: 700;
+                font-size: 1rem;
+                z-index: 100;
+                box-shadow: 0 10px 25px -5px rgba(96, 165, 250, 0.3);
+                backdrop-filter: blur(10px);
+            }
+
+            .level-badge::before {
+                content: "🎯";
+                margin-right: 0.5rem;
+            }
+
+            @media (max-width: 768px) {
+                .glass-card {
+                    padding: 2rem;
+                    margin: 1rem;
+                }
+
+                .feature-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .navigation {
+                    flex-direction: column;
+                    width: 90%;
+                }
+
+                .level-badge {
+                    top: 1rem;
+                    left: 1rem;
+                    padding: 0.5rem 1rem;
+                    font-size: 0.9rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="level-badge">LEVEL 1</div>
+        <div class="step-indicator">
+            <div class="step-dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+        <div class="slide-container">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <div class="animated-bg"></div>
+                <div class="slide-content">
+                    <div class="glass-card slide-enter">
+                        <h1>🎯 AI Formation Challenge</h1>
+                        <h2 style="color: #60a5fa; font-size: 1.5rem; margin-bottom: 1rem">
+                            Level 1: Project Corruption Investigation
+                        </h2>
+                        <p style="font-size: 1.3rem; color: #e2e8f0">
+                            Welcome to your first hands-on challenge with
+                            <span class="highlight">Bigscreen Player</span>
+                        </p>
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">🚀</div>
+                                <h3>Real-World Project</h3>
+                                <p>
+                                    Work with BBC's production-ready video player used across major streaming platforms
+                                </p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🧠</div>
+                                <h3>AI-Powered Learning</h3>
+                                <p>Practice advanced Claude Code techniques on complex, real-world scenarios</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🎪</div>
+                                <h3>Progressive Challenges</h3>
+                                <p>Master debugging, architecture analysis, and systematic problem-solving</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Challenge Overview -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🎮 Your Level 1 Mission</h2>
+                        <p style="font-size: 1.2rem">
+                            Master the fundamentals by working with a
+                            <span class="highlight">corrupted Bigscreen Player project</span> designed to teach core
+                            debugging and investigation skills
+                        </p>
+
+                        <div
+                            style="
+                                background: rgba(96, 165, 250, 0.1);
+                                border: 1px solid rgba(96, 165, 250, 0.3);
+                                border-radius: 12px;
+                                padding: 1.5rem;
+                                margin: 2rem 0;
+                                text-align: left;
+                            ">
+                            <h3 style="color: #60a5fa; margin-bottom: 1rem">🎯 Level 1 Learning Objectives:</h3>
+                            <ul style="color: #cbd5e1; line-height: 1.6">
+                                <li>Master systematic project investigation techniques</li>
+                                <li>Learn to identify and resolve build configuration issues</li>
+                                <li>Practice effective AI-assisted debugging workflows</li>
+                                <li>Understand media player architecture fundamentals</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <h3>🔍 Investigation Phase</h3>
+                                <p>Analyze project structure, understand the codebase, and identify the corruption</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🛠️ Resolution Phase</h3>
+                                <p>Apply systematic debugging approaches to restore functionality</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>📝 Documentation Phase</h3>
+                                <p>Document your process and learnings for the next challenger</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Prerequisites -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🛠️ Before We Start</h2>
+                        <div class="list-style">
+                            <ul>
+                                <li><span class="highlight">Node.js 18+</span> installed on your system</li>
+                                <li><span class="highlight">Claude Code</span> CLI properly configured</li>
+                                <li><span class="highlight">Git</span> for version control</li>
+                                <li>Basic understanding of <span class="highlight">JavaScript/TypeScript</span></li>
+                                <li>
+                                    Familiarity with <span class="highlight">build tools</span> (webpack, npm scripts)
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="terminal-style">
+                            <div class="terminal-prompt">node --version</div>
+                            <div class="terminal-prompt">npm --version</div>
+                            <div class="terminal-prompt">git --version</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Project Setup -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🚀 Project Setup</h2>
+                        <p>Let's get the corrupted Bigscreen Player project running on your machine</p>
+
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-title">Terminal Commands</span>
+                                <button class="copy-btn" onclick="copyCode('setup-code')">Copy</button>
+                            </div>
+                            <pre id="setup-code"><code class="language-bash"># Navigate to the challenge directory
+cd challenges/bigscreen-player
+
+# Initialize Claude Code (if CLAUDE.md doesn't exist)
+claude /init
+
+# Install dependencies
+npm install
+
+# Attempt to start the development server
+npm start</code></pre>
+                        </div>
+
+                        <p style="color: #fbbf24; font-weight: 500">
+                            ⚠️ Don't worry if errors appear - that's the challenge!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Investigation Strategy -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🔍 Investigation Strategy</h2>
+                        <p>Follow this systematic approach to understand the project structure and identify issues</p>
+
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-title">Claude Code Investigation Commands</span>
+                                <button class="copy-btn" onclick="copyCode('investigation-code')">Copy</button>
+                            </div>
+                            <pre
+                                id="investigation-code"><code class="language-bash"># Start with project structure analysis
+claude "Analyze the project structure and identify the main entry points,
+build configuration, and dependency management approach"
+
+# Examine build configuration
+claude "Review the webpack config, package.json scripts, and build setup.
+Identify any configuration issues or missing dependencies"
+
+# Check for obvious errors
+claude "Look for any syntax errors, import issues, or missing files
+that might prevent the project from starting"</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Resolution Approach -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🛠️ Resolution Approach</h2>
+                        <p>Once you've identified the issues, follow this methodical approach to fix them</p>
+
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <h3>🎯 Targeted Fixes</h3>
+                                <p>Address one issue at a time, testing after each fix to ensure progress</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🔄 Iterative Testing</h3>
+                                <p>Run <code>npm start</code> frequently to validate your fixes</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>📚 Context Awareness</h3>
+                                <p>Consider the broader system impact of each change</p>
+                            </div>
+                        </div>
+
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-title">Resolution Pattern</span>
+                                <button class="copy-btn" onclick="copyCode('resolution-code')">Copy</button>
+                            </div>
+                            <pre id="resolution-code"><code class="language-bash"># Fix systematic approach
+claude "Fix the [specific issue] by [proposed solution].
+Ensure this change is compatible with the existing architecture
+and doesn't introduce new problems"
+
+# Test the fix
+npm start
+
+# Document the change
+claude "Document what was fixed and why this solution was chosen"</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Success & Next Steps -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="glass-card">
+                        <h2>🎉 Success & Next Steps</h2>
+                        <p>
+                            When Bigscreen Player runs successfully, you'll see it loading in your browser at
+                            <span class="highlight">localhost:8080</span>
+                        </p>
+
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">✅</div>
+                                <h3>Validation</h3>
+                                <p>Verify the player loads, video content appears, and basic controls work</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">📄</div>
+                                <h3>Documentation</h3>
+                                <p>Create a summary of issues found, solutions applied, and lessons learned</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🎯</div>
+                                <h3>Reflection</h3>
+                                <p>Review your Claude Code interaction patterns and note what worked best</p>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 1.3rem; color: #34d399; text-align: center; margin-top: 2rem">
+                            🚀 <strong>Ready to Begin Level 1?</strong> <br />
+                            Open your terminal and start with the setup commands!<br />
+                            <span style="font-size: 1rem; color: #94a3b8; margin-top: 0.5rem; display: block"
+                                >Complete this level to unlock Level 2 challenges</span
+                            >
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+        <script>
+            let currentSlide = 0
+            const slides = document.querySelectorAll(".slide")
+            const dots = document.querySelectorAll(".dot")
+            const prevBtn = document.getElementById("prevBtn")
+            const nextBtn = document.getElementById("nextBtn")
+
+            function updateSlide() {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove("active", "prev")
+                    if (index === currentSlide) {
+                        slide.classList.add("active")
+                    } else if (index < currentSlide) {
+                        slide.classList.add("prev")
+                    }
+                })
+
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle("active", index === currentSlide)
+                })
+
+                prevBtn.disabled = currentSlide === 0
+                nextBtn.disabled = currentSlide === slides.length - 1
+
+                if (currentSlide === slides.length - 1) {
+                    nextBtn.innerHTML = "🎯 Start Challenge"
+                } else {
+                    nextBtn.innerHTML = "Next →"
+                }
+            }
+
+            function changeSlide(direction) {
+                currentSlide += direction
+                if (currentSlide < 0) currentSlide = 0
+                if (currentSlide >= slides.length) {
+                    if (direction > 0) {
+                        // Last slide action - could redirect or show completion
+                        alert("🚀 Challenge begins now! Open your terminal and start coding!")
+                    }
+                    currentSlide = slides.length - 1
+                }
+                updateSlide()
+            }
+
+            function copyCode(elementId) {
+                const code = document.getElementById(elementId).textContent
+                navigator.clipboard.writeText(code).then(() => {
+                    // Visual feedback
+                    const btn = event.target
+                    const originalText = btn.textContent
+                    btn.textContent = "Copied! ✓"
+                    btn.style.background = "rgba(52, 211, 153, 0.2)"
+                    btn.style.color = "#34D399"
+
+                    setTimeout(() => {
+                        btn.textContent = originalText
+                        btn.style.background = "rgba(96, 165, 250, 0.1)"
+                        btn.style.color = "#60A5FA"
+                    }, 2000)
+                })
+            }
+
+            // Keyboard navigation
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                    changeSlide(-1)
+                } else if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " ") {
+                    e.preventDefault()
+                    changeSlide(1)
+                }
+            })
+
+            // Initialize
+            updateSlide()
+
+            // Add some interactive elements
+            document.querySelectorAll(".feature-card").forEach((card) => {
+                card.addEventListener("mouseenter", function () {
+                    this.style.transform = "translateY(-8px) scale(1.02)"
+                })
+
+                card.addEventListener("mouseleave", function () {
+                    this.style.transform = "translateY(-4px) scale(1)"
+                })
+            })
+
+            // Auto-advance on first slide after 10 seconds
+            setTimeout(() => {
+                if (currentSlide === 0) {
+                    changeSlide(1)
+                }
+            }, 10000)
+        </script>
+    </body>
+</html>
