@@ -68,12 +68,14 @@
                 backdrop-filter: blur(40px) saturate(180%);
                 border: 1px solid rgba(79, 96, 210, 0.15);
                 border-radius: 20px;
-                padding: 4rem;
+                padding: 2rem;
                 box-shadow:
                     0 20px 60px rgba(0, 0, 0, 0.4),
                     inset 0 1px 0 rgba(255, 255, 255, 0.1);
                 position: relative;
                 overflow: hidden;
+                max-height: 85vh;
+                overflow-y: auto;
             }
 
             .glass-card::before {
@@ -87,18 +89,18 @@
             }
 
             h1 {
-                font-size: clamp(2.5rem, 5vw, 4rem);
+                font-size: clamp(2rem, 4vw, 3rem);
                 font-weight: 600;
-                margin-bottom: 1.5rem;
+                margin-bottom: 1rem;
                 color: #f5f5f7;
                 line-height: 1.1;
                 letter-spacing: -0.02em;
             }
 
             h2 {
-                font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+                font-size: clamp(1.5rem, 3vw, 2rem);
                 font-weight: 500;
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
                 color: #f5f5f7;
                 letter-spacing: -0.01em;
             }
@@ -112,10 +114,10 @@
             }
 
             p {
-                font-size: clamp(1rem, 2vw, 1.2rem);
-                line-height: 1.6;
+                font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+                line-height: 1.5;
                 color: rgba(245, 245, 247, 0.8);
-                margin-bottom: 2rem;
+                margin-bottom: 1.5rem;
                 font-weight: 400;
             }
 
@@ -128,9 +130,9 @@
                 background: rgba(15, 15, 17, 0.8);
                 backdrop-filter: blur(20px);
                 border: 1px solid rgba(186, 216, 10, 0.2);
-                border-radius: 16px;
-                padding: 2rem;
-                margin: 2rem 0;
+                border-radius: 12px;
+                padding: 1rem;
+                margin: 0.75rem 0;
                 text-align: left;
                 position: relative;
                 overflow: hidden;
@@ -282,7 +284,7 @@
                 backdrop-filter: blur(20px);
                 border: 1px solid rgba(255, 255, 255, 0.05);
                 border-radius: 16px;
-                padding: 2rem;
+                padding: 1.5rem;
                 transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             }
@@ -562,11 +564,13 @@
                         <h2>🚀 Project Setup</h2>
                         <p>Let's get the corrupted Bigscreen Player project running on your machine</p>
 
-                        <div style="margin: 2rem 0">
-                            <h3 style="color: #4f60d2; margin-bottom: 1.5rem; font-weight: 500">Terminal Commands</h3>
+                        <div style="margin: 1rem 0">
+                            <h3 style="color: #4f60d2; margin-bottom: 1rem; font-weight: 500; font-size: 1.2rem">
+                                Terminal Commands
+                            </h3>
 
                             <!-- Command 1 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Navigate to Challenge Directory</span>
                                     <button class="copy-btn" onclick="copyCommand('setup-cmd1')">Copy</button>
@@ -576,7 +580,7 @@
                             </div>
 
                             <!-- Command 2 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Initialize Claude Code</span>
                                     <button class="copy-btn" onclick="copyCommand('setup-cmd2')">Copy</button>
@@ -585,7 +589,7 @@
                             </div>
 
                             <!-- Command 3 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Install Dependencies</span>
                                     <button class="copy-btn" onclick="copyCommand('setup-cmd3')">Copy</button>
@@ -594,7 +598,7 @@
                             </div>
 
                             <!-- Command 4 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Start Development Server</span>
                                     <button class="copy-btn" onclick="copyCommand('setup-cmd4')">Copy</button>
@@ -625,13 +629,13 @@
                         <h2>🔍 Investigation Strategy</h2>
                         <p>Follow this systematic approach to understand the project structure and identify issues</p>
 
-                        <div style="margin: 2rem 0">
-                            <h3 style="color: #4f60d2; margin-bottom: 1.5rem; font-weight: 500">
+                        <div style="margin: 1rem 0">
+                            <h3 style="color: #4f60d2; margin-bottom: 1rem; font-weight: 500; font-size: 1.2rem">
                                 Claude Code Investigation Commands
                             </h3>
 
                             <!-- Command 1 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Project Structure Analysis</span>
                                     <button class="copy-btn" onclick="copyCommand('cmd1')">Copy</button>
@@ -642,7 +646,7 @@ build configuration, and dependency management approach"</code></pre>
                             </div>
 
                             <!-- Command 2 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Build Configuration Review</span>
                                     <button class="copy-btn" onclick="copyCommand('cmd2')">Copy</button>
@@ -653,7 +657,7 @@ Identify any configuration issues or missing dependencies"</code></pre>
                             </div>
 
                             <!-- Command 3 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Error Detection</span>
                                     <button class="copy-btn" onclick="copyCommand('cmd3')">Copy</button>
@@ -689,11 +693,13 @@ that might prevent the project from starting"</code></pre>
                             </div>
                         </div>
 
-                        <div style="margin: 2rem 0">
-                            <h3 style="color: #4f60d2; margin-bottom: 1.5rem; font-weight: 500">Resolution Pattern</h3>
+                        <div style="margin: 1rem 0">
+                            <h3 style="color: #4f60d2; margin-bottom: 1rem; font-weight: 500; font-size: 1.2rem">
+                                Resolution Pattern
+                            </h3>
 
                             <!-- Command 1 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Fix Systematic Approach</span>
                                     <button class="copy-btn" onclick="copyCommand('fix-cmd1')">Copy</button>
@@ -705,7 +711,7 @@ and doesn't introduce new problems"</code></pre>
                             </div>
 
                             <!-- Command 2 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Test the Fix</span>
                                     <button class="copy-btn" onclick="copyCommand('fix-cmd2')">Copy</button>
@@ -714,7 +720,7 @@ and doesn't introduce new problems"</code></pre>
                             </div>
 
                             <!-- Command 3 -->
-                            <div class="code-block" style="margin-bottom: 1rem">
+                            <div class="code-block" style="margin-bottom: 0.5rem">
                                 <div class="code-header">
                                     <span class="code-title">Document the Change</span>
                                     <button class="copy-btn" onclick="copyCommand('fix-cmd3')">Copy</button>
