@@ -562,22 +562,45 @@
                         <h2>🚀 Project Setup</h2>
                         <p>Let's get the corrupted Bigscreen Player project running on your machine</p>
 
-                        <div class="code-block">
-                            <div class="code-header">
-                                <span class="code-title">Terminal Commands</span>
-                                <button class="copy-btn" onclick="copyCode('setup-code')">Copy</button>
+                        <div style="margin: 2rem 0">
+                            <h3 style="color: #4f60d2; margin-bottom: 1.5rem; font-weight: 500">Terminal Commands</h3>
+
+                            <!-- Command 1 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Navigate to Challenge Directory</span>
+                                    <button class="copy-btn" onclick="copyCommand('setup-cmd1')">Copy</button>
+                                </div>
+                                <pre
+                                    id="setup-cmd1"><code class="language-bash">cd challenges/bigscreen-player</code></pre>
                             </div>
-                            <pre id="setup-code"><code class="language-bash"># Navigate to the challenge directory
-cd challenges/bigscreen-player
 
-# Initialize Claude Code (if CLAUDE.md doesn't exist)
-claude /init
+                            <!-- Command 2 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Initialize Claude Code</span>
+                                    <button class="copy-btn" onclick="copyCommand('setup-cmd2')">Copy</button>
+                                </div>
+                                <pre id="setup-cmd2"><code class="language-bash">claude /init</code></pre>
+                            </div>
 
-# Install dependencies
-npm install
+                            <!-- Command 3 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Install Dependencies</span>
+                                    <button class="copy-btn" onclick="copyCommand('setup-cmd3')">Copy</button>
+                                </div>
+                                <pre id="setup-cmd3"><code class="language-bash">npm install</code></pre>
+                            </div>
 
-# Attempt to start the development server
-npm start</code></pre>
+                            <!-- Command 4 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Start Development Server</span>
+                                    <button class="copy-btn" onclick="copyCommand('setup-cmd4')">Copy</button>
+                                </div>
+                                <pre id="setup-cmd4"><code class="language-bash">npm start</code></pre>
+                            </div>
                         </div>
 
                         <p
@@ -666,21 +689,39 @@ that might prevent the project from starting"</code></pre>
                             </div>
                         </div>
 
-                        <div class="code-block">
-                            <div class="code-header">
-                                <span class="code-title">Resolution Pattern</span>
-                                <button class="copy-btn" onclick="copyCode('resolution-code')">Copy</button>
-                            </div>
-                            <pre id="resolution-code"><code class="language-bash"># Fix systematic approach
-claude "Fix the [specific issue] by [proposed solution].
+                        <div style="margin: 2rem 0">
+                            <h3 style="color: #4f60d2; margin-bottom: 1.5rem; font-weight: 500">Resolution Pattern</h3>
+
+                            <!-- Command 1 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Fix Systematic Approach</span>
+                                    <button class="copy-btn" onclick="copyCommand('fix-cmd1')">Copy</button>
+                                </div>
+                                <pre
+                                    id="fix-cmd1"><code class="language-bash">claude "Fix the [specific issue] by [proposed solution].
 Ensure this change is compatible with the existing architecture
-and doesn't introduce new problems"
+and doesn't introduce new problems"</code></pre>
+                            </div>
 
-# Test the fix
-npm start
+                            <!-- Command 2 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Test the Fix</span>
+                                    <button class="copy-btn" onclick="copyCommand('fix-cmd2')">Copy</button>
+                                </div>
+                                <pre id="fix-cmd2"><code class="language-bash">npm start</code></pre>
+                            </div>
 
-# Document the change
-claude "Document what was fixed and why this solution was chosen"</code></pre>
+                            <!-- Command 3 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Document the Change</span>
+                                    <button class="copy-btn" onclick="copyCommand('fix-cmd3')">Copy</button>
+                                </div>
+                                <pre
+                                    id="fix-cmd3"><code class="language-bash">claude "Document what was fixed and why this solution was chosen"</code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
