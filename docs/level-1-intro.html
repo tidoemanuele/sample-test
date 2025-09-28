@@ -1077,25 +1077,44 @@ and doesn't introduce new problems"</code></pre>
                 }
             })
 
-            // Touch/Swipe navigation
+            // Touch/Swipe navigation with proper gesture detection
             let touchStartX = 0;
+            let touchStartY = 0;
             let touchEndX = 0;
+            let touchEndY = 0;
+            let touchStartTime = 0;
 
             document.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
-            });
+                touchStartY = e.changedTouches[0].screenY;
+                touchStartTime = Date.now();
+            }, { passive: true });
 
             document.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
                 handleSwipe();
-            });
+            }, { passive: true });
 
             function handleSwipe() {
-                const swipeThreshold = 50; // Minimum distance for a swipe
-                const swipeDistance = touchEndX - touchStartX;
+                const minSwipeDistance = 80; // Minimum horizontal distance
+                const maxVerticalDistance = 100; // Maximum vertical movement allowed
+                const maxSwipeTime = 300; // Maximum time for a swipe (ms)
+                const minSwipeVelocity = 0.3; // Minimum velocity (pixels/ms)
 
-                if (Math.abs(swipeDistance) > swipeThreshold) {
-                    if (swipeDistance > 0) {
+                const horizontalDistance = touchEndX - touchStartX;
+                const verticalDistance = Math.abs(touchEndY - touchStartY);
+                const swipeTime = Date.now() - touchStartTime;
+                const swipeVelocity = Math.abs(horizontalDistance) / swipeTime;
+
+                // Check if this is a valid horizontal swipe
+                if (Math.abs(horizontalDistance) >= minSwipeDistance && // Sufficient horizontal distance
+                    verticalDistance <= maxVerticalDistance && // Not too much vertical movement
+                    swipeTime <= maxSwipeTime && // Not too slow
+                    swipeVelocity >= minSwipeVelocity && // Sufficient velocity
+                    Math.abs(horizontalDistance) > verticalDistance * 1.5) { // Predominantly horizontal
+
+                    if (horizontalDistance > 0) {
                         // Swipe right - go to previous slide
                         changeSlide(-1);
                     } else {
