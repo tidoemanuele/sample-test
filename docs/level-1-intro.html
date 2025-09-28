@@ -1077,6 +1077,34 @@ and doesn't introduce new problems"</code></pre>
                 }
             })
 
+            // Touch/Swipe navigation
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            document.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum distance for a swipe
+                const swipeDistance = touchEndX - touchStartX;
+
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    if (swipeDistance > 0) {
+                        // Swipe right - go to previous slide
+                        changeSlide(-1);
+                    } else {
+                        // Swipe left - go to next slide
+                        changeSlide(1);
+                    }
+                }
+            }
+
             // Initialize
             updateSlide()
 
