@@ -602,23 +602,43 @@ npm start</code></pre>
                         <h2>🔍 Investigation Strategy</h2>
                         <p>Follow this systematic approach to understand the project structure and identify issues</p>
 
-                        <div class="code-block">
-                            <div class="code-header">
-                                <span class="code-title">Claude Code Investigation Commands</span>
-                                <button class="copy-btn" onclick="copyCode('investigation-code')">Copy</button>
+                        <div style="margin: 2rem 0">
+                            <h3 style="color: #4f60d2; margin-bottom: 1.5rem; font-weight: 500">
+                                Claude Code Investigation Commands
+                            </h3>
+
+                            <!-- Command 1 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Project Structure Analysis</span>
+                                    <button class="copy-btn" onclick="copyCommand('cmd1')">Copy</button>
+                                </div>
+                                <pre
+                                    id="cmd1"><code class="language-bash">claude "Analyze the project structure and identify the main entry points,
+build configuration, and dependency management approach"</code></pre>
                             </div>
-                            <pre
-                                id="investigation-code"><code class="language-bash"># Start with project structure analysis
-claude "Analyze the project structure and identify the main entry points,
-build configuration, and dependency management approach"
 
-# Examine build configuration
-claude "Review the webpack config, package.json scripts, and build setup.
-Identify any configuration issues or missing dependencies"
+                            <!-- Command 2 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Build Configuration Review</span>
+                                    <button class="copy-btn" onclick="copyCommand('cmd2')">Copy</button>
+                                </div>
+                                <pre
+                                    id="cmd2"><code class="language-bash">claude "Review the webpack config, package.json scripts, and build setup.
+Identify any configuration issues or missing dependencies"</code></pre>
+                            </div>
 
-# Check for obvious errors
-claude "Look for any syntax errors, import issues, or missing files
+                            <!-- Command 3 -->
+                            <div class="code-block" style="margin-bottom: 1rem">
+                                <div class="code-header">
+                                    <span class="code-title">Error Detection</span>
+                                    <button class="copy-btn" onclick="copyCommand('cmd3')">Copy</button>
+                                </div>
+                                <pre
+                                    id="cmd3"><code class="language-bash">claude "Look for any syntax errors, import issues, or missing files
 that might prevent the project from starting"</code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -779,13 +799,31 @@ claude "Document what was fixed and why this solution was chosen"</code></pre>
                     const btn = event.target
                     const originalText = btn.textContent
                     btn.textContent = "Copied! ✓"
-                    btn.style.background = "rgba(52, 211, 153, 0.2)"
-                    btn.style.color = "#34D399"
+                    btn.style.background = "rgba(110, 165, 20, 0.9)"
+                    btn.style.color = "#ffffff"
 
                     setTimeout(() => {
                         btn.textContent = originalText
-                        btn.style.background = "rgba(96, 165, 250, 0.1)"
-                        btn.style.color = "#60A5FA"
+                        btn.style.background = "rgba(186, 216, 10, 0.9)"
+                        btn.style.color = "#0d0d0d"
+                    }, 2000)
+                })
+            }
+
+            function copyCommand(elementId) {
+                const command = document.getElementById(elementId).textContent.trim()
+                navigator.clipboard.writeText(command).then(() => {
+                    // Visual feedback
+                    const btn = event.target
+                    const originalText = btn.textContent
+                    btn.textContent = "Copied! ✓"
+                    btn.style.background = "rgba(110, 165, 20, 0.9)"
+                    btn.style.color = "#ffffff"
+
+                    setTimeout(() => {
+                        btn.textContent = originalText
+                        btn.style.background = "rgba(186, 216, 10, 0.9)"
+                        btn.style.color = "#0d0d0d"
                     }, 2000)
                 })
             }
