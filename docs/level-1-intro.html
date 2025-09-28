@@ -187,6 +187,8 @@
                 line-height: 1.6;
                 color: rgba(245, 245, 247, 0.9);
                 font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+                overflow-x: auto;
+                overflow-wrap: break-word;
             }
 
             .step-indicator {
@@ -430,6 +432,28 @@
                     top: 1rem;
                     left: 1rem;
                     padding: 0.5rem 1rem;
+                    font-size: 0.9rem;
+                }
+
+                .code-block {
+                    margin-bottom: 1rem;
+                }
+
+                .code-block pre {
+                    font-size: 1rem;
+                    line-height: 1.8;
+                    padding: 1.5rem;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                }
+
+                .code-title {
+                    font-size: 1rem;
+                }
+
+                .copy-btn {
+                    padding: 0.7rem 1.2rem;
                     font-size: 0.9rem;
                 }
             }
